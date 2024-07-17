@@ -16,12 +16,8 @@ jobs:
           fi
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: ls
-        run: ls -l
-      - name: Remove spec dir
+      - name: Cleanup repository
         run: rm -rf spec setup spec-setup
-      - name: ls
-        run: ls -l
       - name: Checkout private specs
         uses: actions/checkout@v4
         with:
@@ -31,29 +27,15 @@ jobs:
           repository: TestEducationAlexey/public_spec
           token: ${{ secrets.GITHUB_TOKEN }}
           path: spec-setup
-      - name: ls
-        run: ls -l
-      - name: cp -r
-        run: cp -r spec-setup/spec/ spec/ && cp -r spec-setup/setup/ setup/
-      - name: ls
-        run: ls -l
-      # - name: Install Ruby and gems
-      #   uses: ruby/setup-ruby@1
-      #   with:
-      #     bundler-cache: true
-      # - name: Set up database schema
-      #   run: bin/rails db:schema:load
-      # - name: Removing froze
-      #   run: bin/bundle config set frozen false
-      # - name: Adding linux lock
-      #   run: bin/bundle lock --add-platform x86_64-linux
-      # - name: Rspec-rails install
-      #   run: bin/bundle add rspec-rails
-      # - name: Load rspec repo
-      #   run: git clone https://username:$GITHUB_TOKEN@github.com/examinertest/testrspecs.git
-      # - name: Removing users specs
-      #   run: rm -rf spec/
-      # - name: Moving spec folder
-      #   run: mv testrspecs/spec .
-      # - name: Run tests
-      #   run: bin/bundle exec rspec spec
+      - name: Move specs and setup
+        run: mv spec-setup/spec/ spec/ && mv spec-setup/setup/ setup/
+      - name: Install Ruby
+        uses: ruby/setup-ruby@1
+      - name: Setup specs
+        run: ruby setup/install_check.rb
+      - name: Install gems
+        run: bin/bundle install
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      - name: Run tests
+        run: bin/bundle exec rspec spec

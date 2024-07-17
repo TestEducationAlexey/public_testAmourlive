@@ -30,7 +30,7 @@ jobs:
       - name: Move specs and setup
         run: mv spec-setup/spec/ spec/ && mv spec-setup/setup/ setup/
       - name: Install Ruby
-        uses: ruby/setup-ruby@1
+        uses: ruby/setup-ruby@v1
       - name: Setup specs
         run: ruby setup/install_check.rb
       - name: Install gems

@@ -10,13 +10,14 @@ jobs:
       - name: Check if owner
         run: |
           IFS='/' read -ra ORG_REPO <<< "$GITHUB_REPOSITORY"
-          echo $GITHUB_ACTOR
           if [ "$GITHUB_ACTOR" != "octo-organization-test[bot]" ]; then
             echo "Only the owner can run this action."
             exit 1
           fi
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: ls
+        run: ls -l
       - name: Checkout private specs
         uses: actions/checkout@v4
         with:

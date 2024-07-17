@@ -11,7 +11,7 @@ jobs:
         run: |
           IFS='/' read -ra ORG_REPO <<< "$GITHUB_REPOSITORY"
           echo $GITHUB_ACTOR
-          if [ "$GITHUB_ACTOR" != "octoorganizationtest[bot]" ]; then
+          if [ "$GITHUB_ACTOR" != "octo-organization-test[bot]" ]; then
             echo "Only the owner can run this action."
             exit 1
           fi
@@ -20,14 +20,16 @@ jobs:
       - name: Checkout private specs
         uses: actions/checkout@v4
         with:
-          sparse-checkout: spec
+          sparse-checkout: |
+            spec
+            setup
           repository: TestEducationAlexey/public_spec
           token: ${{ secrets.GITHUB_TOKEN }}
-          path: spec
+#          path: spec
       - name: ls
         run: ls -l
       # - name: Install Ruby and gems
-      #   uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+      #   uses: ruby/setup-ruby@1
       #   with:
       #     bundler-cache: true
       # - name: Set up database schema
